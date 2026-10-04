@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.32" r="0.75">
+      <stop offset="0" stop-color="#272f7a"/>
+      <stop offset="1" stop-color="#10143a"/>
+    </radialGradient>
+    <radialGradient id="flare" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffcf3f" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#ffcf3f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="star" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffbe6"/>
+      <stop offset="1" stop-color="#ffcf3f"/>
+    </linearGradient>
+    <filter id="lift" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#04061a" flood-opacity="0.55"/>
+    </filter>
+    <linearGradient id="face-ff9a3c" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffba7a"/>
+      <stop offset="1" stop-color="#ff9a3c"/>
+    </linearGradient>
+    <linearGradient id="face-2ec5ff" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#71d8ff"/>
+      <stop offset="1" stop-color="#2ec5ff"/>
+    </linearGradient>
+    <linearGradient id="face-3ddc84" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7be7ab"/>
+      <stop offset="1" stop-color="#3ddc84"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <g transform="translate(256 256) scale(1) translate(-256 -256)">
+    <rect x="54" y="54" width="404" height="404" rx="44" fill="#080b26" fill-opacity="0.5" stroke="#3b4392" stroke-opacity="0.55" stroke-width="3"/>
+    <g filter="url(#lift)">
+    <g>
+      <rect x="70" y="70" width="116" height="116" rx="26" fill="#9e5f25"/>
+      <rect x="70" y="70" width="116" height="107" rx="26" fill="url(#face-ff9a3c)"/>
+      <rect x="86" y="80" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="198" y="70" width="116" height="116" rx="26" fill="#9e5f25"/>
+      <rect x="198" y="70" width="116" height="107" rx="26" fill="url(#face-ff9a3c)"/>
+      <rect x="214" y="80" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="326" y="70" width="116" height="116" rx="26" fill="#9e5f25"/>
+      <rect x="326" y="70" width="116" height="107" rx="26" fill="url(#face-ff9a3c)"/>
+      <rect x="342" y="80" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="198" y="198" width="116" height="116" rx="26" fill="#9e5f25"/>
+      <rect x="198" y="198" width="116" height="107" rx="26" fill="url(#face-ff9a3c)"/>
+      <rect x="214" y="208" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="70" y="198" width="116" height="116" rx="26" fill="#1d7a9e"/>
+      <rect x="70" y="198" width="116" height="107" rx="26" fill="url(#face-2ec5ff)"/>
+      <rect x="86" y="208" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="70" y="326" width="116" height="116" rx="26" fill="#1d7a9e"/>
+      <rect x="70" y="326" width="116" height="107" rx="26" fill="url(#face-2ec5ff)"/>
+      <rect x="86" y="336" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="198" y="326" width="116" height="116" rx="26" fill="#1d7a9e"/>
+      <rect x="198" y="326" width="116" height="107" rx="26" fill="url(#face-2ec5ff)"/>
+      <rect x="214" y="336" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="326" y="326" width="116" height="116" rx="26" fill="#1d7a9e"/>
+      <rect x="326" y="326" width="116" height="107" rx="26" fill="url(#face-2ec5ff)"/>
+      <rect x="342" y="336" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    <g>
+      <rect x="326" y="198" width="116" height="116" rx="26" fill="#268852"/>
+      <rect x="326" y="198" width="116" height="107" rx="26" fill="url(#face-3ddc84)"/>
+      <rect x="342" y="208" width="84" height="14" rx="7" fill="#fff" fill-opacity="0.42"/>
+    </g>
+    </g>
+    <circle cx="434" cy="78" r="62.099999999999994" fill="url(#flare)"/>
+    <path d="M434 24 Q444.8 67.2 488 78 Q444.8 88.8 434 132 Q423.2 88.8 380 78 Q423.2 67.2 434 24 Z" fill="url(#star)"/>
+  </g>
+</svg>
