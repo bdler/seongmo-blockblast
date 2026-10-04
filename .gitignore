@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+*.log
+
+# e2e 산출물(스크린샷 등)
+e2e/.artifacts/
+
+# clasp 설정(스크립트 ID)
+gas/.clasp.json
