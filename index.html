@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#10143a">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="8x8 보드에 블록을 놓아 줄을 지우는 퍼즐 게임">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="블록 블라스트">
+  <title>블록 블라스트</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./styles/main.css">
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <noscript>
+    <p class="noscript">자바스크립트를 켜야 게임을 할 수 있어요.</p>
+  </noscript>
+
+  <!-- 아이콘 스프라이트: 문서 안에서만 참조한다 -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-crown" viewBox="0 0 24 24">
+      <path d="M2.5 8.5 7.5 12.5 12 4.5 16.5 12.5 21.5 8.5 19.5 19.5H4.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24">
+      <rect x="6" y="5" width="4" height="14" rx="1.6" fill="currentColor"/>
+      <rect x="14" y="5" width="4" height="14" rx="1.6" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="M6.5 6.5 17.5 17.5M17.5 6.5 6.5 17.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <div id="app">
+    <header class="hud">
+      <div class="hud__score">
+        <div class="hud__row">
+          <span class="hud__label" data-i18n="hud.score"></span>
+          <span class="chip hud__combo" data-testid="hud-combo" data-visible="false" aria-hidden="true"></span>
+        </div>
+        <strong class="hud__value" data-testid="hud-score">0</strong>
+      </div>
+      <div class="hud__best">
+        <span class="hud__label">
+          <svg class="icon icon--gold" aria-hidden="true"><use href="#i-crown"/></svg>
+          <span data-i18n="hud.best"></span>
+        </span>
+        <strong class="hud__best-value" data-testid="hud-best">0</strong>
+      </div>
+      <button type="button" class="icon-btn" data-testid="btn-pause" data-i18n-attr="aria-label:hud.pause">
+        <svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg>
+      </button>
+    </header>
+
+    <main class="stage">
+      <canvas id="game" role="img" data-i18n-attr="aria-label:a11y.board"></canvas>
+    </main>
+
+    <div class="layers">
+      <!-- 홈 -->
+      <section class="overlay overlay--home" data-overlay="home" data-testid="screen-home" role="dialog" aria-modal="true" aria-labelledby="home-title" data-open="false" aria-hidden="true" hidden>
+        <div class="overlay__backdrop"></div>
+        <div tabindex="-1" class="panel home">
+          <div class="home__brand">
+            <div class="logo-mark" aria-hidden="true">
+              <i class="blk" data-c="1"></i><i class="blk" data-c="2"></i><i class="blk" data-c="3"></i>
+              <i class="blk" data-c="5"></i><i class="blk" data-c="7"></i><i class="blk" data-c="4"></i>
+              <i class="blk" data-c="6"></i><i class="blk" data-c="5"></i><i class="blk" data-c="1"></i>
+              <i class="logo-mark__spark"></i>
+            </div>
+            <h1 class="wordmark" id="home-title"></h1>
+            <p class="home__tagline" data-i18n="home.tagline"></p>
+          </div>
+          <div class="home__menu">
+            <div class="best-card">
+              <span class="best-card__label">
+                <svg class="icon icon--gold" aria-hidden="true"><use href="#i-crown"/></svg>
+                <span data-i18n="home.best"></span>
+              </span>
+              <strong class="best-card__value" data-testid="home-best">0</strong>
+            </div>
+            <button type="button" class="btn btn--primary btn--lg" data-testid="btn-play" data-i18n="home.play"></button>
+            <button type="button" class="btn btn--secondary" data-testid="btn-continue" data-i18n="home.continue" hidden></button>
+            <div class="home__row">
+              <button type="button" class="btn btn--secondary" data-testid="btn-howto" data-i18n="home.howto"></button>
+              <button type="button" class="btn btn--secondary" data-testid="btn-settings" data-i18n="home.settings"></button>
+            </div>
+            <button type="button" class="btn btn--ghost" data-testid="btn-install" data-i18n="home.install" hidden></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 일시정지 -->
+      <section class="overlay" data-overlay="pause" data-testid="overlay-pause" role="dialog" aria-modal="true" aria-labelledby="pause-title" data-open="false" aria-hidden="true" hidden>
+        <div class="overlay__backdrop"></div>
+        <div tabindex="-1" class="panel panel--card pause">
+          <div class="pause__head">
+            <div class="badge-icon" aria-hidden="true">
+              <svg class="icon"><use href="#i-pause"/></svg>
+            </div>
+            <h2 class="panel__title" id="pause-title" data-i18n="pause.title"></h2>
+            <p class="panel__hint" data-i18n="pause.hint"></p>
+          </div>
+          <div class="stack">
+            <button type="button" class="btn btn--primary" data-testid="btn-resume" data-autofocus data-i18n="pause.resume"></button>
+            <button type="button" class="btn btn--secondary" data-testid="btn-restart" data-i18n="pause.restart"></button>
+            <button type="button" class="btn btn--secondary" data-testid="btn-pause-settings" data-i18n="pause.settings"></button>
+            <button type="button" class="btn btn--ghost" data-testid="btn-pause-home" data-i18n="pause.home"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 게임 오버: 보드가 비치도록 배경을 덜 어둡게 한다 -->
+      <section class="overlay overlay--light" data-overlay="gameover" data-testid="overlay-gameover" role="dialog" aria-modal="true" aria-labelledby="gameover-title" data-open="false" aria-hidden="true" hidden>
+        <div class="overlay__backdrop"></div>
+        <div tabindex="-1" class="panel panel--card gameover">
+          <h2 class="panel__title" id="gameover-title" data-i18n="gameover.title"></h2>
+          <p class="panel__hint" data-i18n="gameover.hint"></p>
+          <div class="scorecard">
+            <span class="scorecard__label" data-i18n="gameover.score"></span>
+            <strong class="scorecard__value" data-testid="gameover-score">0</strong>
+          </div>
+          <p class="gameover__best">
+            <svg class="icon icon--gold" aria-hidden="true"><use href="#i-crown"/></svg>
+            <span data-i18n="gameover.best"></span>
+            <strong data-testid="gameover-best">0</strong>
+          </p>
+          <dl class="stats" data-testid="gameover-stats">
+            <div class="stat"><dt data-i18n="gameover.stats.lines"></dt><dd data-stat="lines">0</dd></div>
+            <div class="stat"><dt data-i18n="gameover.stats.maxCombo"></dt><dd data-stat="maxCombo">0</dd></div>
+            <div class="stat"><dt data-i18n="gameover.stats.moves"></dt><dd data-stat="moves">0</dd></div>
+          </dl>
+          <div class="stack">
+            <button type="button" class="btn btn--primary" data-testid="btn-retry" data-autofocus data-i18n="gameover.retry"></button>
+            <button type="button" class="btn btn--ghost" data-testid="btn-gameover-home" data-i18n="gameover.home"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 설정 -->
+      <section class="overlay" data-overlay="settings" data-testid="overlay-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" data-open="false" aria-hidden="true" hidden>
+        <div class="overlay__backdrop"></div>
+        <div tabindex="-1" class="panel panel--card settings">
+          <header class="panel__head">
+            <h2 class="panel__title panel__title--left" id="settings-title" data-i18n="settings.title"></h2>
+            <button type="button" class="icon-btn" data-testid="btn-settings-close" data-i18n-attr="aria-label:settings.close">
+              <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+            </button>
+          </header>
+
+          <div class="setting setting--switch">
+            <span class="setting__label" id="label-sound" data-i18n="settings.sound"></span>
+            <span class="setting__state" data-state-for="sound"></span>
+            <button type="button" role="switch" class="switch" aria-checked="false" aria-labelledby="label-sound" data-testid="toggle-sound"><span class="switch__knob"></span></button>
+          </div>
+
+          <div class="setting setting--range">
+            <span class="setting__label" id="label-volume" data-i18n="settings.volume"></span>
+            <output class="setting__state" data-testid="volume-readout" for="range-volume">0%</output>
+            <input type="range" class="range" id="range-volume" min="0" max="100" step="5" value="100" aria-labelledby="label-volume" data-testid="range-volume">
+          </div>
+
+          <div class="setting setting--switch">
+            <span class="setting__text">
+              <span class="setting__label" id="label-haptics" data-i18n="settings.haptics"></span>
+              <span class="setting__hint" data-i18n="settings.hapticsHint"></span>
+            </span>
+            <span class="setting__state" data-state-for="haptics"></span>
+            <button type="button" role="switch" class="switch" aria-checked="false" aria-labelledby="label-haptics" data-testid="toggle-haptics"><span class="switch__knob"></span></button>
+          </div>
+
+          <div class="setting">
+            <span class="setting__text">
+              <label class="setting__label" for="select-motion" data-i18n="settings.motion"></label>
+              <span class="setting__hint" data-i18n="settings.motionHint"></span>
+            </span>
+            <span class="select-wrap">
+              <select class="select" id="select-motion" data-testid="select-motion">
+                <option value="auto"></option>
+                <option value="on"></option>
+                <option value="off"></option>
+              </select>
+            </span>
+          </div>
+
+          <button type="button" class="btn btn--secondary settings__howto" data-testid="btn-settings-howto" data-i18n="settings.howto"></button>
+          <p class="settings__version" data-testid="settings-version"></p>
+        </div>
+      </section>
+
+      <!-- 게임 방법 -->
+      <section class="overlay" data-overlay="howto" data-testid="overlay-howto" role="dialog" aria-modal="true" aria-labelledby="howto-title" data-open="false" aria-hidden="true" hidden>
+        <div class="overlay__backdrop"></div>
+        <div tabindex="-1" class="panel panel--card howto">
+          <h2 class="panel__title" id="howto-title" data-i18n="howto.title"></h2>
+          <ol class="steps"></ol>
+          <button type="button" class="btn btn--primary" data-testid="btn-howto-close" data-autofocus data-i18n="howto.start"></button>
+        </div>
+      </section>
+
+      <!-- 토스트: 내용이 바뀔 때 읽어 주도록 라이브 영역은 항상 렌더링해 둔다 -->
+      <div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
+        <div class="toast" data-testid="toast" data-open="false" aria-hidden="true" hidden>
+          <span class="toast__message"></span>
+          <button type="button" class="toast__action" data-testid="toast-action" hidden></button>
+        </div>
+      </div>
+
+      <!-- 점수 안내용 라이브 영역(화면에는 보이지 않는다) -->
+      <div class="sr-only" id="live-score" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </div>
+</body>
+</html>
